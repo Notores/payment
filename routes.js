@@ -1,17 +1,81 @@
 const PaymentRouter = require('./Router');
-const pack = require('./package');
+const {routeWithHandle, checkEmptyParams, checkParamIsObjectId} = require('@notores/core');
 
 module.exports = () => {
 
-    router.get(pack.route, PaymentRouter.get);
+    routeWithHandle(
+        'notores-payment',
+        '/payment',
+        [
+            PaymentRouter.get,
+        ],
+        {
+            accepts: ['html', 'json'],
+        },
+    );
 
-    router.get(`${pack.route}/:id`, PaymentRouter.getById);
-    router.get(`${pack.route}/:invoiceNo`, PaymentRouter.getByPaymentId);
+    routeWithHandle(
+        'notores-payment-single-id',
+        '/payment/:id',
+        [
+            checkParamIsObjectId,
+            PaymentRouter.getById,
+        ],
+        {
+            accepts: ['html', 'json'],
+        },
+    );
 
-    router.post(pack.route, PaymentRouter.post);
+    routeWithHandle(
+        'notores-payment-single-invoiceno',
+        '/payment/:invoiceNo',
+        [
+            checkEmptyParams,
+            PaymentRouter.getByPaymentId,
+        ],
+        {
+            accepts: ['html', 'json'],
+        },
+    );
 
-    router.put(`${pack.route}/:id`, PaymentRouter.put);
+    routeWithHandle(
+        'notores-payment-create',
+        '/payment',
+        [
+            PaymentRouter.get,
+        ],
+        {
+            accepts: ['html', 'json'],
+            method: 'post',
+            admin: true
+        },
+    );
 
-    router.delete(`${pack.route}/:id`, PaymentRouter.delete);
+    routeWithHandle(
+        'notores-payment-update',
+        '/payment/:id',
+        [
+            checkParamIsObjectId,
+            PaymentRouter.put,
+        ],
+        {
+            accepts: ['html', 'json'],
+            method: 'put',
+            admin: true
+        },
+    );
 
+    routeWithHandle(
+        'notores-payment-delete',
+        '/payment/:id',
+        [
+            checkParamIsObjectId,
+            PaymentRouter.delete,
+        ],
+        {
+            accepts: ['html', 'json'],
+            method: 'delete',
+            admin: true
+        },
+    );
 };
