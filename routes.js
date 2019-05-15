@@ -56,7 +56,7 @@ module.exports = () => {
         '/payment/:id',
         [
             checkParamIsObjectId,
-            PaymentRouter.put,
+            PaymentRouter.post,
         ],
         {
             accepts: ['html', 'json'],
